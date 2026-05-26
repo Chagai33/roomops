@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { usePropertyStore } from '../store/usePropertyStore';
-import { useAppStore } from '../store/useAppStore';
 import { useAuthStore } from '../store/useAuthStore';
 import { PropertiesSetup } from '../components/admin/PropertiesSetup';
 import { RoomsSetup } from '../components/admin/RoomsSetup';
@@ -11,7 +10,6 @@ import { StaffSetup } from '../components/admin/StaffSetup';
 type AdminTab = 'PROPERTIES' | 'ROOMS' | 'INVENTORY' | 'LAUNDRY' | 'STAFF' | 'EXPORT';
 
 export const Admin: React.FC = () => {
-  const { t } = useAppStore();
   const { rooms, inventory, floorTasks } = usePropertyStore();
   const { profile } = useAuthStore();
   
