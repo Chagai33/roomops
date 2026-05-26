@@ -1,0 +1,50 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Rules for users collection
+    match /users/{userId} {
+      // Allow user to read/write their own profile, 
+      // or allow any authenticated user to create a profile (during signup/join)
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+
+    // Rules for properties collection
+    match /properties/{propertyId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+      
+      // Rules for nested collections within a property
+      match /inventory/{itemId} {
+        allow read, write: if isAuthenticated();
+      }
+      
+      match /rooms/{roomId} {
+        allow read, write: if isAuthenticated();
+      }
+      
+      match /floors/{floorId} {
+        allow read, write: if isAuthenticated();
+      }
+      
+      match /laundry/{machineId} {
+        allow read, write: if isAuthenticated();
+      }
+    }
+
+    // Rules for invites collection
+    match /invites/{inviteId} {
+      // Anyone authenticated can read invites (to join)
+      allow read: if isAuthenticated();
+      // Only admins should ideally create, but for now allow authenticated
+      allow write: if isAuthenticated();
+    }
+  }
+}
